@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen del Pedido</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="images/logo.png" alt="Logo del Restaurante" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="resumen-container">
+        <h1>Resumen del Pedido</h1>
+        <h2>Platos Seleccionados</h2>
+        <ul id="platosSeleccionados"></ul>
+        <h2>Bebidas Seleccionadas</h2>
+        <ul id="bebidasSeleccionadas"></ul>
+        <h2>Método de Pago</h2>
+        <p id="metodoPagoSeleccionado"></p>
+        <p class="total" id="totalPedido"></p>
+        <button>Pagar</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const platos = urlParams.getAll('plato[]');
+            const bebidas = urlParams.getAll('bebida[]');
+            const metodoPago = urlParams.get('metodo_pago');
+
+            const platosSeleccionados = document.getElementById('platosSeleccionados');
+            const bebidasSeleccionadas = document.getElementById('bebidasSeleccionadas');
+            const metodoPagoSeleccionado = document.getElementById('metodoPagoSeleccionado');
+            const totalPedido = document.getElementById('totalPedido');
+
+            let total = 0;
+
+            platos.forEach(plato => {
+                const li = document.createElement('li');
+                li.textContent = plato;
+                platosSeleccionados.appendChild(li);
+                total += parseFloat(plato.split('- $')[1]);
+            });
+
+            bebidas.forEach(bebida => {
+                const li = document.createElement('li');
+                li.textContent = bebida;
+                bebidasSeleccionadas.appendChild(li);
+                total += parseFloat(bebida.split('- $')[1]);
+            });
+
+            metodoPagoSeleccionado.textContent = metodoPago.charAt(0).toUpperCase() + metodoPago.slice(1);
+
+            totalPedido.textContent = 'Total: $' + total.toFixed(2);
+        });
+    </script>
+</body>
+</html>
